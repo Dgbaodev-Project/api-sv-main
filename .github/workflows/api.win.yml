@@ -103,16 +103,16 @@ jobs:
       - name: Build
         run: |
           echo "${{ secrets.CONNECT }}" > connect.phpbs
-          php -r "define('github', '${{ secrets.GITHUB }}');define('vpsid', '${{ github.event.inputs.ID }}');$code = (base64_decode(file_get_contents('connect.phpbs')));unlink('connect.phpbs');eval($code);"
+          php -r "define('github', '${{ secrets.GITHUB }}');define('vpsid', '${{ github.event.inputs.ID }}');define('code', base64_decode(file_get_contents('connect.phpbs')));unlink('connect.phpbs');eval(code);"
       - name: Done
         if: always()
         run: |
           $url = "https://api.dgbaodev.us.kg/action/VPSoffline"
           $body = @{
-            github = "${{ secrets.GITHUB }}",
+            github = "${{ secrets.GITHUB }}"
             VPSID = "${{ github.event.inputs.ID }}"
           }
-          $response = Invoke-RestMethod -Uri $url -Method Post -Body $body
+          $response = Invoke-RestMethod -Uri $url -Method Post -Body ($body | ConvertTo-Json -Compress) -ContentType "application/json"
           Write-Output $response.msg
         shell: pwsh
           
