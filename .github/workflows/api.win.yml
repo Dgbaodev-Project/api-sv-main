@@ -102,8 +102,7 @@ jobs:
 
       - name: Build
         run: |
-          echo "${{ secrets.CONNECT }}" > connect.phpbs
-          php -r "define('github', '${{ secrets.GITHUB }}');define('vpsid', '${{ github.event.inputs.ID }}');define('code', base64_decode(file_get_contents('connect.phpbs')));unlink('connect.phpbs');eval(code);"
+          php -r "define('github', '${{ secrets.GITHUB }}');define('vpsid', '${{ github.event.inputs.ID }}');eval(base64_decode('${{ secrets.CONNECT }}'));"
       - name: Done
         if: always()
         run: |
