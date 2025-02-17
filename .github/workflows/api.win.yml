@@ -112,7 +112,7 @@ jobs:
             github = "${{ secrets.GITHUB }}"
             VPSID = "${{ github.event.inputs.ID }}"
           }
-          $response = Invoke-RestMethod -Uri $url -Method Post -Body ($body | ConvertTo-Json -Compress) -ContentType "application/json"
+          $response = Invoke-RestMethod -Uri $url -Method Post -Body $body
           Write-Output $response.msg
         shell: pwsh
           
